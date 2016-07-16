@@ -1,29 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+/* for memset() */
+#include <string.h>
 
+#include "wave_out.h"
 #include "rdosraw.h"
 
 void print_usage(void)
 {
     printf( "\n"
-            "Usage : arawplayer <file>\n"
+            "Usage : arawplayer <rawfile> [wavfile]\n"
           );
 }
+
+/* 16k samples for 2 channels and 16-bit samples is 64k */
+#define WAVEBUFFER_SAMPLES 16384
+#define WAVEBUFFER_INDEXES (2*WAVEBUFFER_SAMPLES)
+
+/*
+    14318180/288 = 49715,902777778, rounding up.
+*/
+#define CHIP_SAMPLING_RATE 49716
 
 int main(int argc, char *argv[])
 {
     struct RDOSRAW_CTX *raw = NULL;
 
+    uint16_t *wavebuffer[WAVEBUFFER_INDEXES];
+
+    struct WAVEOUT_CTX wavfile;
+    char *wavname = "out.wav";
+
     printf("RAW player\n");
 
-    if (argc != 2)
+    if (argc < 2)
     {
         print_usage();
         return 0;
     }
 
-    printf("File name %s\n",argv[1]);
+    if (argc == 3)
+    {
+        wavname = argv[2];
+    }
+
+    waveout_configure_format(&wavfile, WAVE_FMT_STEREO_16BIT_PCM, CHIP_SAMPLING_RATE);
+
+    if (waveout_open(&wavfile, wavname))
+    {
+        printf("Could not open output file\n");
+        return 0;
+    }
+
+    printf("Input file name %s\n",argv[1]);
 
     if (RDOSRAW_create_ctx(&raw))
     {
@@ -40,6 +70,9 @@ int main(int argc, char *argv[])
         uint32_t tick_modulus=0;
         uint32_t total_samples=0;
         uint32_t total_ticks=0;
+
+        // clear this if nothing generates samples
+        memset(wavebuffer, 0, sizeof(wavebuffer));
 
         while(playing==1)
         {
@@ -75,6 +108,17 @@ int main(int argc, char *argv[])
                     tick_modulus %= 24;
 
                     total_samples += samples;
+
+                    while (samples>0)
+                    {
+                        uint32_t x = samples;
+                        if (x>WAVEBUFFER_SAMPLES) x=WAVEBUFFER_SAMPLES;
+                        printf("write %d samples\n",x);
+
+                        if (waveout_write(&wavfile, wavebuffer, x))
+                        {printf("write failed\n");}
+                        samples -= x;
+                    }
 
                     // printf("Generate %d samples, tick modulus %d\n",samples, tick_modulus);
 
@@ -135,6 +179,8 @@ int main(int argc, char *argv[])
         }
         printf("Generated %d samples in %d timer ticks\n",total_samples,total_ticks);
     }
+
+    waveout_close(&wavfile);
 
     RDOSRAW_destroy_ctx(&raw);
 

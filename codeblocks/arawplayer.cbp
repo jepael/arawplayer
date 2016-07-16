@@ -40,9 +40,11 @@
 		<Unit filename="../src/rdosraw.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../src/rdosraw.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="../src/rdosraw.h" />
+		<Unit filename="../src/wave_out.c">
+			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/wave_out.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

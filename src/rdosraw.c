@@ -176,6 +176,11 @@ unsigned int RDOSRAW_get_event(struct RDOSRAW_CTX **ctx)
         case RDOSRAW_EVENTREG_DELAY:
 
             events |= EVENT_TIMER_TICKS;
+            /*
+                - Max timer period is 65536 timer cycles (0x10000)
+                - Max periods is 255 (0xFF)
+                - Max return value is 16711680 or 0xFF0000 ticks
+            */
             (*ctx)->delay_ticks = (*ctx)->timer_period * data;
             DEBUG_PRINTF("%4X: Delay %2X\n",offset, data);
             break;
