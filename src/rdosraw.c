@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #ifndef RDOSRAW_DEBUG
-#define RDOSRAW_DEBUG 1
+#define RDOSRAW_DEBUG 0
 #endif
 
 #if RDOSRAW_DEBUG > 0

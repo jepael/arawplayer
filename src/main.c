@@ -42,8 +42,69 @@ int main(int argc, char *argv[])
 
             int event = RDOSRAW_get_event(&raw);
 
-            if (event & EVENT_PLAY_STOP)
+            if (event)
             {
+                if (event&EVENT_CHIP_WRITE)
+                {
+                    event &=~ EVENT_CHIP_WRITE;
+
+                    uint32_t chipbase=raw->chip_base;
+                    uint32_t chipreg=raw->chip_regindex;
+                    uint32_t chipdat=raw->chip_regdata;
+
+                    // printf("Write chip %1X reg %2X dat %2X\n",chipbase, chipreg, chipdat);
+                }
+
+                if (event&EVENT_TIMER_TICKS)
+                {
+                    event &=~ EVENT_TIMER_TICKS;
+
+                    uint32_t timerdelay=raw->delay_ticks;
+                    // printf("Timer delay %d ticks\n",timerdelay);
+
+                }
+
+                if (event&EVENT_TIMER_SET)
+                {
+                    event &=~ EVENT_TIMER_SET;
+
+                    double timerhz=(14.318180e6/12.0)/(raw->timer_period);
+                    printf("Timer set to %f Hz\n",timerhz);
+                }
+
+                if (event&EVENT_CHIP_BASECHANGE)
+                {
+                    event &=~ EVENT_CHIP_BASECHANGE;
+
+                    printf("Chip baseport change\n");
+                }
+
+                if (event&EVENT_CHIP_BASE0)
+                {
+                    event &=~ EVENT_CHIP_BASE0;
+
+                    printf("Chip baseport base 0\n");
+                }
+
+                if (event&EVENT_CHIP_BASE1)
+                {
+                    event &=~ EVENT_CHIP_BASE1;
+
+                    printf("Chip baseport base 1\n");
+                }
+
+                if (event & EVENT_PLAY_STOP)
+                {
+                    event &=~ EVENT_PLAY_STOP;
+                    printf("Finished playback!\n");
+                    playing=0;
+                }
+
+                if (event) printf("ERROR: Unhandled event(s) %4X\n", event);
+            }
+            else
+            {
+                printf("ERROR: No event!\n");
                 playing=0;
             }
 
