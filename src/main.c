@@ -37,6 +37,10 @@ int main(int argc, char *argv[])
     {
         int playing=1;
 
+        uint32_t tick_modulus=0;
+        uint32_t total_samples=0;
+        uint32_t total_ticks=0;
+
         while(playing==1)
         {
 
@@ -48,9 +52,11 @@ int main(int argc, char *argv[])
                 {
                     event &=~ EVENT_CHIP_WRITE;
 
+                    /*
                     uint32_t chipbase=raw->chip_base;
                     uint32_t chipreg=raw->chip_regindex;
                     uint32_t chipdat=raw->chip_regdata;
+                    */
 
                     // printf("Write chip %1X reg %2X dat %2X\n",chipbase, chipreg, chipdat);
                 }
@@ -61,6 +67,16 @@ int main(int argc, char *argv[])
 
                     uint32_t timerdelay=raw->delay_ticks;
                     // printf("Timer delay %d ticks\n",timerdelay);
+
+                    total_ticks += timerdelay;
+
+                    tick_modulus += timerdelay;
+                    uint32_t samples = tick_modulus/24;
+                    tick_modulus %= 24;
+
+                    total_samples += samples;
+
+                    // printf("Generate %d samples, tick modulus %d\n",samples, tick_modulus);
 
                 }
 
@@ -93,6 +109,14 @@ int main(int argc, char *argv[])
                     printf("Chip baseport base 1\n");
                 }
 
+                if (event & EVENT_END_MARKER)
+                {
+                    event &=~ EVENT_END_MARKER;
+                    printf("End of data marker found\n");
+                    // NOTE: if looping, must continue playing
+                    // playing = 0;
+                }
+
                 if (event & EVENT_PLAY_STOP)
                 {
                     event &=~ EVENT_PLAY_STOP;
@@ -109,6 +133,7 @@ int main(int argc, char *argv[])
             }
 
         }
+        printf("Generated %d samples in %d timer ticks\n",total_samples,total_ticks);
     }
 
     RDOSRAW_destroy_ctx(&raw);
