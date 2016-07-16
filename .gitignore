@@ -1,0 +1,12 @@
+# output binary
+
+/arawplayer
+
+# object files
+
+*.o
+
+# Code::Blocks dependency file
+
+*.depend
+
