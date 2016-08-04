@@ -38,6 +38,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../src/chipemu/operator/exp_rom.h" />
+		<Unit filename="../src/chipemu/operator/logsin_rom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/chipemu/operator/logsin_rom.h" />
 		<Unit filename="../src/chipemu/operator/operator.c">
 			<Option compilerVar="CC" />
 		</Unit>
