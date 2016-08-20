@@ -29,11 +29,37 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="ChipDebug">
+				<Option output="../arawplayer" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="../obj/Debug" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../src/chipemu/debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/chipemu/debug.h" />
+		<Unit filename="../src/chipemu/debugmain.c">
+			<Option compilerVar="CC" />
+			<Option target="ChipDebug" />
+		</Unit>
+		<Unit filename="../src/chipemu/envelope/key_scale.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/chipemu/envelope/key_scale.h" />
+		<Unit filename="../src/chipemu/envelope/ksl_rom.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/chipemu/envelope/ksl_rom.h" />
 		<Unit filename="../src/chipemu/operator/exp_rom.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -47,6 +73,10 @@
 		</Unit>
 		<Unit filename="../src/main.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
 		</Unit>
 		<Unit filename="../src/rdosraw.c">
 			<Option compilerVar="CC" />
