@@ -74,8 +74,6 @@
 		<Unit filename="../src/chipemu/operator/operator.h" />
 		<Unit filename="../src/main.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
