@@ -71,6 +71,7 @@
 		<Unit filename="../src/chipemu/operator/operator.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../src/chipemu/operator/operator.h" />
 		<Unit filename="../src/main.c">
 			<Option compilerVar="CC" />
 			<Option compile="0" />

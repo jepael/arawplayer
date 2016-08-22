@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "envelope/key_scale.h"
+#include "operator/operator.h"
 
 void print_ksl_db(int ksl)
  {
@@ -20,3 +21,15 @@ void print_ksl_db(int ksl)
     }
     printf("\r\n");
  }
+
+void print_pos_neg(int min, int max)
+{
+    int attn;
+
+    printf("PCM pos and neg\r\n");
+    for (attn=min; attn<=max; attn++)
+    {
+        printf("%i: %i %i\r\n",attn, pcmconvert(attn,0), pcmconvert(attn,1));
+    }
+    printf("\r\n");
+}
