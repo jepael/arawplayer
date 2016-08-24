@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "envelope/key_scale.h"
 #include "operator/operator.h"
+#include "operator/logsin_rom.h"
+
+extern int logsin_calc(int i);
 
 void print_ksl_db(int ksl)
  {
@@ -32,4 +35,24 @@ void print_pos_neg(int min, int max)
         printf("%i: %i %i\r\n",attn, pcmconvert(attn,0), pcmconvert(attn,1));
     }
     printf("\r\n");
+}
+
+void compare_logsin_rom(void)
+{
+    int i;
+    int total=0;
+
+    for (i=0; i<256; i++)
+    {
+        if (logsin_calc(i) == logsin_rom[i]) total++;
+    }
+
+    if (total == 256)
+    {
+        printf("logsin calculation match\r\n");
+    }
+    else
+    {
+        printf("logsin calculation fail\r\n");
+    }
 }
