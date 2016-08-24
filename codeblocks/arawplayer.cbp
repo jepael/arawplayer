@@ -46,6 +46,7 @@
 		</Compiler>
 		<Unit filename="../src/chipemu/debug.c">
 			<Option compilerVar="CC" />
+			<Option target="ChipDebug" />
 		</Unit>
 		<Unit filename="../src/chipemu/debug.h" />
 		<Unit filename="../src/chipemu/debugmain.c">
@@ -60,6 +61,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../src/chipemu/envelope/ksl_rom.h" />
+		<Unit filename="../src/chipemu/exp_calc.c">
+			<Option compilerVar="CC" />
+			<Option target="ChipDebug" />
+		</Unit>
+		<Unit filename="../src/chipemu/logsin_calc.c">
+			<Option compilerVar="CC" />
+			<Option target="ChipDebug" />
+		</Unit>
 		<Unit filename="../src/chipemu/operator/exp_rom.c">
 			<Option compilerVar="CC" />
 		</Unit>

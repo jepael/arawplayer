@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     print_pos_neg(0,0xC01);
 
     compare_logsin_rom();
+    compare_exp_rom();
 
     return 0;
 }

@@ -4,5 +4,6 @@
 void print_ksl_db(int ksl);
 void print_pos_neg(int min, int max);
 void compare_logsin_rom(void);
+void compare_exp_rom(void);
 
 #endif // DEBUG_H_INCLUDED
