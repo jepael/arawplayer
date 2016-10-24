@@ -3,6 +3,7 @@
 #include "operator/operator.h"
 #include "operator/logsin_rom.h"
 #include "operator/exp_rom.h"
+#include "phasegen/phasegen.h"
 
 extern int logsin_calc(int i);
 extern int exp_calc(int i);
@@ -77,4 +78,23 @@ void compare_exp_rom(void)
     {
         printf("exp calculation fail\r\n");
     }
+}
+
+void print_phaseinc(int fnum)
+{
+	int multi;
+	int block;
+
+    printf("FNUM table for %d : \r\n",fnum);
+
+    for (multi=0; multi<16; multi++)
+    {
+        for (block=0; block<8; block++)
+        {
+            int phinc = calcphaseinc(fnum, block, multi);
+            printf("%d ",phinc);
+        }
+        printf("\r\n");
+    }
+    printf("\r\n");
 }
