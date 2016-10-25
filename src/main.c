@@ -6,6 +6,7 @@
 
 #include "wave_out.h"
 #include "rdosraw.h"
+#include "chipemu/chipemu.h"
 
 void print_usage(void)
 {
@@ -25,6 +26,7 @@ void print_usage(void)
 
 int main(int argc, char *argv[])
 {
+    struct CHIPEMU *chip = NULL;
     struct RDOSRAW_CTX *raw = NULL;
 
     uint16_t *wavebuffer[WAVEBUFFER_INDEXES];
@@ -43,6 +45,13 @@ int main(int argc, char *argv[])
     if (argc == 3)
     {
         wavname = argv[2];
+    }
+
+    chip = chipemu_create();
+    if (chip == NULL)
+    {
+        printf("Could not allocate chip instance\n");
+        return 0;
     }
 
     waveout_configure_format(&wavfile, WAVE_FMT_STEREO_16BIT_PCM, CHIP_SAMPLING_RATE);
@@ -90,6 +99,22 @@ int main(int argc, char *argv[])
                     uint32_t chipreg=raw->chip_regindex;
                     uint32_t chipdat=raw->chip_regdata;
                     */
+
+                    switch (raw->chip_base)
+                    {
+                        case 0:
+                            chipemu_writeport(chip, 0, raw->chip_regindex);
+                            chipemu_writeport(chip, 1, raw->chip_regdata);
+                            break;
+
+                        case 1:
+                            chipemu_writeport(chip, 2, raw->chip_regindex);
+                            chipemu_writeport(chip, 3, raw->chip_regdata);
+                            break;
+
+                        default:
+                            break;
+                    }
 
                     // printf("Write chip %1X reg %2X dat %2X\n",chipbase, chipreg, chipdat);
                 }
@@ -183,6 +208,9 @@ int main(int argc, char *argv[])
     waveout_close(&wavfile);
 
     RDOSRAW_destroy_ctx(&raw);
+
+    chipemu_dumpregs(chip);
+    chipemu_destroy(chip);
 
     return 0;
 }

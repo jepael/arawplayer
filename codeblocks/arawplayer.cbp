@@ -44,6 +44,10 @@
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../src/chipemu/chipemu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/chipemu/chipemu.h" />
 		<Unit filename="../src/chipemu/debug.c">
 			<Option compilerVar="CC" />
 			<Option target="ChipDebug" />
