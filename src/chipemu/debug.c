@@ -4,6 +4,7 @@
 #include "operator/logsin_rom.h"
 #include "operator/exp_rom.h"
 #include "phasegen/phasegen.h"
+#include "chipemu.h"
 
 extern int logsin_calc(int i);
 extern int exp_calc(int i);
@@ -97,4 +98,51 @@ void print_phaseinc(int fnum)
         printf("\r\n");
     }
     printf("\r\n");
+}
+
+struct CHIPEMU *dbgchip = NULL;
+
+void debug_writereg(int reg, int data)
+{
+    if (dbgchip == NULL)
+    {
+        dbgchip = chipemu_create();
+        if (dbgchip == NULL) return;
+    }
+
+    if (reg&0x100)
+    {
+        chipemu_writeport(dbgchip,2,reg);
+        chipemu_writeport(dbgchip,3,data);
+    }
+    else
+    {
+        chipemu_writeport(dbgchip,0,reg);
+        chipemu_writeport(dbgchip,1,data);
+    }
+
+}
+
+void debug_newbit(void)
+{
+    printf("Debugging NEW bit\r\n");
+
+    debug_writereg(0x004,0x01);
+    debug_writereg(0x104,0x02);
+
+    debug_writereg(0x105,0x00);
+
+    debug_writereg(0x004,0x03);
+    debug_writereg(0x104,0x04);
+
+    debug_writereg(0x105,0x01);
+
+    debug_writereg(0x004,0x05);
+    debug_writereg(0x104,0x06);
+
+    debug_writereg(0x105,0x00);
+
+    debug_writereg(0x004,0x07);
+    debug_writereg(0x104,0x08);
+
 }

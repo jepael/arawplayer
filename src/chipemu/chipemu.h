@@ -1,6 +1,8 @@
 #ifndef CHIPEMU_H_INCLUDED
 #define CHIPEMU_H_INCLUDED
 
+#include <stdint.h>
+
 #define CHIPEMU_DEBUG 1
 
 struct CHIPEMU * chipemu_create(void);
