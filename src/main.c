@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
                     {
                         uint32_t x = samples;
                         if (x>WAVEBUFFER_SAMPLES) x=WAVEBUFFER_SAMPLES;
-                        printf("write %d samples\n",x);
+                        // printf("write %d samples\n",x);
 
                         if (waveout_write(&wavfile, wavebuffer, x))
                         {printf("write failed\n");}
